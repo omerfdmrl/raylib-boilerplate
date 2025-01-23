@@ -15,13 +15,14 @@ void scene_menu_create() {
 }
 
 void scene_menu_update() {
+    ClearBackground((Color) {0, 0, 0, 0});
     DrawText("Main Menu", WINDOW_WIDTH/2 - MeasureText("Main Menu", 40)/2, 50, 40, DARKGRAY);
 
     if (GuiButton(startButton, "Start Game"))
         DrawText("Game Started", WINDOW_WIDTH/2 - MeasureText("Game Started", 20)/2, WINDOW_HEIGHT/2 + 100, 20, GREEN);
 
     if (GuiButton(optionsButton, "Settings"))
-        DrawText("Settings Opened", WINDOW_WIDTH/2 - MeasureText("Settings Opened", 20)/2, WINDOW_HEIGHT/2 + 120, 20, BLUE);
+        scene_change("settings");
 
     if (GuiButton(exitButton, "Exit"))
         game_close();
