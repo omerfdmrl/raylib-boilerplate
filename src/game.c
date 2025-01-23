@@ -1,8 +1,13 @@
 #include "game.h"
 
 void game_loop() {
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose() && g_status.running) {
         g_delta = GetFrameTime();
+
+        if (g_status.fullscreen)
+            SetWindowSize(GetMonitorWidth(g_status.monitor), GetMonitorHeight(g_status.monitor));
+        else
+            SetWindowSize(WINDOW_WIDTH, WINDOW_WIDTH);
         
         BeginDrawing();
 
@@ -17,16 +22,11 @@ void game_start() {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     SetTargetFPS(TARGET_FPS);
 
+    g_status.monitor = GetCurrentMonitor();
+
     scene_change("menu");
 
-    if (g_status.scene->create)
-        g_status.scene->create();
-
     game_loop();
-
-    if (g_status.scene->destroy)
-        g_status.scene->destroy();
-
 
     CloseWindow();
 }

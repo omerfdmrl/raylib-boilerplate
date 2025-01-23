@@ -9,9 +9,13 @@
 struct s_status {
     scene_core *scene;
     struct {
+        uint8 running: 1;
         uint8 paused: 1;
         uint8 debug: 1;
+        uint8 fullscreen: 1;
     };
+
+    int monitor;
 };
 
 typedef struct s_status status;
@@ -19,5 +23,8 @@ typedef struct s_status status;
 extern status g_status;
 
 void scene_change(char *name);
+void game_close();
+void game_stop();
+void game_fullscreen();
 
 #endif // !STATUS_H

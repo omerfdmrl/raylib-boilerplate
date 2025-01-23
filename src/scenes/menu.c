@@ -1,27 +1,30 @@
 #define RAYGUI_IMPLEMENTATION
-
 #include "menu.h"
 #include "raygui.h"
 #include "raygui_style_terminal.h"
 
-bool showMessageBox;
+Rectangle startButton;
+Rectangle optionsButton;
+Rectangle exitButton;
 
 void scene_menu_create() {
     GuiLoadStyleTerminal();
-    showMessageBox = false;
+    startButton = (Rectangle) { WINDOW_WIDTH/2 - 100, WINDOW_HEIGHT/2 - 50, 200, 40 };
+    optionsButton = (Rectangle) { WINDOW_WIDTH/2 - 100, WINDOW_HEIGHT/2, 200, 40 };
+    exitButton = (Rectangle) { WINDOW_WIDTH/2 - 100, WINDOW_HEIGHT/2 + 50, 200, 40 };
 }
 
 void scene_menu_update() {
-    ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
+    DrawText("Main Menu", WINDOW_WIDTH/2 - MeasureText("Main Menu", 40)/2, 50, 40, DARKGRAY);
 
-    if (GuiButton((Rectangle){ 24, 24, 120, 30 }, "#191#Show Message")) showMessageBox = true;
+    if (GuiButton(startButton, "Start Game"))
+        DrawText("Game Started", WINDOW_WIDTH/2 - MeasureText("Game Started", 20)/2, WINDOW_HEIGHT/2 + 100, 20, GREEN);
 
-    if (showMessageBox) {
-        int result = GuiMessageBox((Rectangle){ 85, 70, 250, 100 },
-            "#191#Message Box", "Hi! This is a message!", "Nice;Cool");
+    if (GuiButton(optionsButton, "Settings"))
+        DrawText("Settings Opened", WINDOW_WIDTH/2 - MeasureText("Settings Opened", 20)/2, WINDOW_HEIGHT/2 + 120, 20, BLUE);
 
-        if (result >= 0) showMessageBox = false;
-    }
+    if (GuiButton(exitButton, "Exit"))
+        game_close();
 }
 
 void scene_menu_destroy() {
