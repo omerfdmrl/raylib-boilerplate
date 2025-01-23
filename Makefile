@@ -3,6 +3,11 @@ GDB = gdb
 RM = rm -rf
 MKDIR = mkdir -p
 
+ifeq ($(OS),Windows_NT)
+	RM = del /s /q
+    MKDIR = mkdir
+endif
+
 LIBRARIES := -lm
 INCLUDE_PATH := 
 FLAGS :=
@@ -11,6 +16,8 @@ SOURCE = main.c
 OUTPUT = program
 TEST_OUTPUT = bin
 
+SRC_PATH = src/
+VENDOR_PATH = vendor/
 LIB_PATH = lib/
 TEST_PATH = test/
 RESULT_PATH = build/results/
@@ -21,10 +28,16 @@ RAYLIB_PATH = $(LIB_PATH)raylib/
 LIBRARIES := -L$(RAYLIB_PATH) -lraylib $(LIBRARIES)
 INCLUDE_PATH := $(INCLUDE_PATH) -I$(RAYLIB_PATH)
 
-SRC_DIRS := src src/utils src/scenes
-VPATH := $(SRC_DIRS)
+SRC_DIRS := $(wildcard $(SRC_PATH)*/)
+SRC_DIRS := $(SRC_PATH) $(SRC_DIRS)
 
-CFILES := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))
+CFILES := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)*.c))
+
+VENDOR_DIRS := $(wildcard $(VENDOR_PATH)*/)
+VENDOR_DIRS := $(VENDOR_PATH) $(VENDOR_DIRS)
+
+CFILES := $(foreach dir, $(VENDOR_DIRS), $(wildcard $(dir)*.c)) $(CFILES)
+LIBRARIES := $(foreach dir, $(VENDOR_DIRS), -I$(dir)) $(LIBRARIES)
 
 $(OUTPUT): $(CFILES)
 	$(GCC) $(FLAGS) $(SOURCE) $(INCLUDE_PATH) $(CFILES) -o $(RESULT_PATH)$(OUTPUT) $(LIBRARIES)
@@ -32,7 +45,7 @@ $(OUTPUT): $(CFILES)
 run: $(OUTPUT)
 	./$(RESULT_PATH)$(OUTPUT)
 
-testing: $(UNITY_PATH)
+test: $(UNITY_PATH)
 	$(eval LIBRARIES := $(LIBRARIES) -L$(UNITY_PATH))
 	$(eval INCLUDE_PATH := $(INCLUDE_PATH) -I$(UNITY_PATH))
 	$(GCC) $(FLAGS) $(TEST_PATH)$(SOURCE) $(OFILES) -o $(RESULT_PATH)$(TEST_OUTPUT) $(LIBRARIES)
@@ -49,5 +62,5 @@ valgrind: $(OUTPUT)
 clean:
 	$(RM) $(OFILES) $(OUTPUT)
 
-.PHONY: all run testing gdb clean
+.PHONY: all run test gdb clean
 .DEFAULT_GOAL = run

@@ -2,8 +2,10 @@
 
 #define SCENE_MENU_H
 
-#include "core.h"
+#include "scene/core.h"
 #include "../global.h"
+
+REGISTER_SCENE(scene_menu);
 
 scene_core *scene_menu();
 

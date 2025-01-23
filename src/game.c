@@ -17,7 +17,7 @@ void game_start() {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     SetTargetFPS(TARGET_FPS);
 
-    scene_change(g_scenes.menu);
+    scene_change("menu");
 
     if (g_status.scene->create)
         g_status.scene->create();

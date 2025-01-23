@@ -2,11 +2,9 @@
 
 #define STATUS_H
 
-#include "common.h"
-#include "global.h"
-#include "scenes/core.h"
-#include "scenes/home.h"
-#include "scenes/menu.h"
+#include "./common.h"
+#include "./global.h"
+#include "./scene/core.h"
 
 struct s_status {
     scene_core *scene;
@@ -20,6 +18,6 @@ typedef struct s_status status;
 
 extern status g_status;
 
-void scene_change(uint8 scene);
+void scene_change(char *name);
 
 #endif // !STATUS_H

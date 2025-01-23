@@ -2,18 +2,18 @@
 
 #define SCENE_CORE_H
 
-#include "../common.h"
+typedef struct s_scene_core scene_core; /* TODO: Find another way to block circular dependency  */
+
+#include "../status.h"
 
 struct s_scene_core {
-    uint8 id;
+    char *name;
     void (*create)();
     void (*update)();
     void (*destroy)();
 };
 
-typedef struct s_scene_core scene_core;
-
-scene_core *scene_core_alloc(uint8 id);
+scene_core *scene_core_alloc(char *name);
 void scene_core_free(scene_core *scene);
 
 #endif // !SCENE_CORE_H

@@ -2,8 +2,10 @@
 
 #define SCENE_HOME_H
 
-#include "core.h"
+#include "scene/core.h"
 #include "../global.h"
+
+REGISTER_SCENE(scene_home)
 
 scene_core *scene_home();
 

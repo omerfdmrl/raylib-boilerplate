@@ -2,8 +2,8 @@
 
 #define COMMON_H
 
-#include "utils/assert.h"
-#include "utils/logger.h"
+#include "./utils/assert.h"
+#include "./utils/logger.h"
 #include "raylib.h"
 #include <stdio.h>
 #include <stdlib.h>

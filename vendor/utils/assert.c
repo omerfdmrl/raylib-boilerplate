@@ -1,4 +1,4 @@
-#include "assert.h"
+#include "./assert.h"
 
 void report_assertion_failure(const char* expression, const char* message, const char* file, int line) {
     if(strlen(message) > 0)

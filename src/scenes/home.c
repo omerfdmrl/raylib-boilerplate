@@ -15,7 +15,7 @@ void scene_home_destroy() {
 scene_core *scene_home() {
     scene_core *scene;
 
-    scene = scene_core_alloc(1);
+    scene = scene_core_alloc("home");
     scene->create = scene_home_create;
     scene->update = scene_home_update;
     scene->destroy = scene_home_destroy;

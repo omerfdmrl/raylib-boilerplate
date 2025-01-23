@@ -2,7 +2,7 @@
 
 #define UTIL_ASSERT_H
 
-#include "logger.h"
+#include "./logger.h"
 
 #define ASSERT(expr)                                                 \
     {                                                                \
