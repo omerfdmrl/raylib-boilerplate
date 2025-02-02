@@ -11,12 +11,13 @@ scene_core *scene_core_alloc(char *name) {
 
     strcpy(scene->name, name);
 
-    g_scenes.insert(&g_scenes, name, scene);
+    linked_list_insert(&g_scenes, name, scene);
 
     return (scene);
 };
 
 void scene_core_free(scene_core *scene) {
+    scene->destroy();
     FREE(scene->name);
     FREE(scene);
 }

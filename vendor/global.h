@@ -3,20 +3,37 @@
 #define GLOBAL_H
 
 #include "./common.h"
-#include "./utils/map.h"
+#include "./utils/linked_list.h"
+#include "./object/core.h"
 
-#define WINDOW_TITLE "Example Window Title"
-#define WINDOW_HEIGHT 600
-#define WINDOW_WIDTH 800
-#define TARGET_FPS 60
+struct s_config {
+    char *title;
+    char *base_dir;
+    uint32 window_height;
+    uint32 window_width;
+    uint16 target_fps;
+    Font font;
+};
 
-#define REGISTER_SCENE(name)                                     \
-    scene_core *name();                                                \
-    __attribute__((constructor)) static void register_##symbol_name() {    \
-        name();                        \
+typedef struct s_config config;
+
+#define REGISTER_SCENE(name)                                        \
+    scene_core *name();                                             \
+    __attribute__((constructor)) static void register_##name() {    \
+        name();                                                     \
     }
 
-extern map g_scenes;
-extern float g_delta;
+#define REGISTER_OBJECT(name)                                       \
+    object_core *name();                                             \
+    __attribute__((constructor)) static void register_##name() {    \
+        name();                                                     \
+    }
+
+extern linked_list g_data;
+extern linked_list g_scenes;
+extern linked_list g_objects;
+extern config g_config;
+
+char *path_assets(char *path);
 
 #endif // !GLOBAL_H

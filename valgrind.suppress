@@ -1,0 +1,14 @@
+{
+   suppress_X11_leak
+   Memcheck:Leak
+   fun:calloc
+   fun:_XimOpenIM
+   fun:_XimRegisterIMInstantiateCallback
+   fun:XRegisterIMInstantiateCallback
+   fun:_glfwInitX11
+   fun:glfwInit
+   fun:InitPlatform
+   fun:InitWindow
+   fun:game_start
+   fun:main
+}
