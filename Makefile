@@ -26,7 +26,7 @@ UNITY_PATH = $(LIB_PATH)unity/
 RAYLIB_PATH = $(LIB_PATH)raylib/
 CJSON_PATH = $(LIB_PATH)cJSON/
 
-LIBRARIES := -L$(RAYLIB_PATH) -lraylib -L$(CJSON_PATH) -lcjson $(LIBRARIES)
+LIBRARIES := -L$(RAYLIB_PATH) -lraylib $(LIBRARIES)
 INCLUDE_PATH := $(INCLUDE_PATH) -I$(RAYLIB_PATH) -I$(LIB_PATH) -I$(CJSON_PATH)
 
 SRC_DIRS := $(SRC_PATH) \
@@ -35,6 +35,7 @@ SRC_DIRS := $(SRC_PATH) \
             $(wildcard $(SRC_PATH)*/*/*/)
 
 CFILES := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)*.c))
+CFILES += $(CJSON_PATH)cJSON.c
 
 VENDOR_DIRS := $(VENDOR_PATH) \
             $(wildcard $(VENDOR_PATH)*/) \
