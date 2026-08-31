@@ -1,5 +1,4 @@
 #include "game.h"
-#include <GLFW/glfw3.h>
 
 void game_loop() {
     while (!WindowShouldClose() && g_status.running) {
