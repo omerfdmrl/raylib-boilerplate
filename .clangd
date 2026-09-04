@@ -1,0 +1,6 @@
+Diagnostics:
+  UnusedIncludes: None
+InlayHints:
+  Enabled: Yes
+  ParameterNames: Yes
+  Designators: Yes

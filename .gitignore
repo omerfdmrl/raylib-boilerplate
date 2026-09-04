@@ -1,2 +1,7 @@
 .vscode/
 build/
+build-asan/
+compile_commands.json
+.builddir/
+meson-logs/
+docs/
