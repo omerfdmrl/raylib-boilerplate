@@ -51,10 +51,30 @@ $(OUTPUT): $(CFILES)
 run: $(OUTPUT)
 	./$(RESULT_PATH)$(OUTPUT)
 
-test: $(UNITY_PATH)
-	$(eval LIBRARIES := $(LIBRARIES) -L$(UNITY_PATH))
-	$(eval INCLUDE_PATH := $(INCLUDE_PATH) -I$(UNITY_PATH))
-	$(GCC) $(FLAGS) $(TEST_PATH)$(SOURCE) $(OFILES) -o $(RESULT_PATH)$(TEST_OUTPUT) $(LIBRARIES)
+test:
+	$(GCC) -I$(RAYLIB_PATH) -I$(LIB_PATH) -I$(CJSON_PATH) -I$(UNITY_PATH) \
+		-I$(VENDOR_PATH) -I$(VENDOR_PATH)utils -I$(VENDOR_PATH)scene \
+		-I$(VENDOR_PATH)object -I$(VENDOR_PATH)helpers \
+		-I$(TEST_PATH) -I$(TEST_PATH)utils -I$(TEST_PATH)scene -I$(TEST_PATH)object \
+		$(UNITY_PATH)unity.c \
+		$(VENDOR_PATH)utils/linked_list.c \
+		$(VENDOR_PATH)utils/hashmap.c \
+		$(VENDOR_PATH)utils/logger.c \
+		$(VENDOR_PATH)utils/assert.c \
+		$(VENDOR_PATH)scene/core.c \
+		$(VENDOR_PATH)object/core.c \
+		$(VENDOR_PATH)status.c \
+		$(VENDOR_PATH)global.c \
+		$(CJSON_PATH)cJSON.c \
+		$(TEST_PATH)test_runner.c \
+		$(TEST_PATH)utils/linked_list_test.c \
+		$(TEST_PATH)utils/hashmap_test.c \
+		$(TEST_PATH)utils/logger_test.c \
+		$(TEST_PATH)utils/assert_test.c \
+		$(TEST_PATH)scene/core_test.c \
+		$(TEST_PATH)object/core_test.c \
+		-L$(RAYLIB_PATH) -lraylib -lm -lpthread -ldl -lrt -lX11 \
+		-o $(RESULT_PATH)$(TEST_OUTPUT)
 	./$(RESULT_PATH)$(TEST_OUTPUT)
 
 gdb:
