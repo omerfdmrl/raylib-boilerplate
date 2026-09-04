@@ -23,7 +23,7 @@ void game_loop() {
 void game_start() {
     char *font_asset_path;
 
-    InitWindow(g_config.window_height, g_config.window_width, g_config.title);
+    InitWindow(g_config.window_width, g_config.window_height, g_config.title);
     SetTargetFPS(g_config.target_fps);
 
     SetExitKey(0);

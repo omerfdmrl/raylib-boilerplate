@@ -36,10 +36,19 @@ int hashmap_function(hash_map* mp, char* key) {
  
 void hashmap_insert(hash_map* mp, char* key, void* value) {
     int bucketIndex;
-    hash_node* newNode;
+    hash_node *curr, *newNode;
 
     bucketIndex = hashmap_function(mp, key);
     ASSERT_MSG(bucketIndex >= 0 && bucketIndex < mp->capacity, "Invalid bucket index");
+
+    curr = mp->data[bucketIndex];
+    while (curr != NULL) {
+        if (strcmp(curr->key, key) == 0) {
+            curr->value = value;
+            return;
+        }
+        curr = curr->next;
+    }
 
     newNode = (hash_node*) MALLOC(sizeof(hash_node));
     ASSERT_MSG(newNode != NULL, "Node allocation failed");
@@ -75,8 +84,10 @@ void hashmap_delete(hash_map* mp, char* key) {
                 prevNode->next = currNode->next;
             FREE(currNode);
             mp->size--;
-            break;
+            return;
         }
+        prevNode = currNode;
+        currNode = currNode->next;
     }
 }
  

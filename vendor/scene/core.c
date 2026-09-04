@@ -1,4 +1,5 @@
 #include "./core.h"
+#include "../status.h"
 
 scene_core *scene_core_alloc(char *name) {
     scene_core *scene;
@@ -17,7 +18,9 @@ scene_core *scene_core_alloc(char *name) {
 };
 
 void scene_core_free(scene_core *scene) {
-    scene->destroy();
+    linked_list_erase(&g_scenes, scene->name);
+    if (scene->destroy)
+        scene->destroy();
     FREE(scene->name);
     FREE(scene);
 }

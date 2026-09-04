@@ -3,6 +3,7 @@
 #define SCENE_MENU_H
 
 #include "scene/core.h"
+#include "status.h"
 #include "../global.h"
 
 REGISTER_SCENE(scene_menu);

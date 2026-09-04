@@ -1,4 +1,5 @@
 #include "./core.h"
+#include "../status.h"
 
 object_core *object_core_alloc(char *name) {
     object_core *object;
@@ -17,7 +18,9 @@ object_core *object_core_alloc(char *name) {
 }
 
 void object_core_free(object_core *object) {
-    object->destroy();
+    linked_list_erase(&g_objects, object->name);
+    if (object->destroy)
+        object->destroy();
     FREE(object->name);
     FREE(object);
 }

@@ -4,7 +4,9 @@
 
 #include "./common.h"
 #include "./utils/linked_list.h"
-#include "./object/core.h"
+
+typedef struct s_scene_core scene_core;
+typedef struct s_object_core object_core;
 
 struct s_config {
     char *title;
@@ -35,5 +37,6 @@ extern linked_list g_objects;
 extern config g_config;
 
 char *path_assets(char *path);
+char *path_data(char *path);
 
 #endif // !GLOBAL_H

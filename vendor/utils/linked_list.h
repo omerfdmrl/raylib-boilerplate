@@ -1,6 +1,6 @@
-#ifndef UTIL_MAP_H
+#ifndef UTIL_LINKED_LIST_H
 
-#define UTIL_MAP_H
+#define UTIL_LINKED_LIST_H
 
 #include "../common.h"
 
@@ -29,4 +29,4 @@ void linked_list_apply(linked_list *linked_list, void (*fn)(linked_list_item *it
 void linked_list_clear(linked_list *linked_list);
 void linked_list_free(linked_list *linked_list);
 
-#endif // !UTIL_MAP_H
+#endif // !UTIL_LINKED_LIST_H

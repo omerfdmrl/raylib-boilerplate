@@ -3,6 +3,7 @@
 #define SCENE_GAME_H
 
 #include "scene/core.h"
+#include "status.h"
 #include "helpers/tilemap.h"
 #include "../global.h"
 
