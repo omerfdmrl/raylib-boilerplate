@@ -4,8 +4,13 @@
 
 #include "../common.h"
 #include "../global.h"
-#include "../utils/hashmap.h"
+#include "hashmap.h"
 #include "cJSON.h"
+
+typedef struct {
+    char key[16];
+    void *value;
+} TileAsset;
 
 struct s_tilemap {
     uint16 width;
@@ -16,7 +21,7 @@ struct s_tilemap {
     uint16 *data;
     uint8 *collisions;
     cJSON *layers;
-    hash_map *assets;
+    struct hashmap *assets;
 };
 
 typedef struct s_tilemap tilemap;

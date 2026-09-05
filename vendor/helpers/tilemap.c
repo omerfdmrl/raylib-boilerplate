@@ -1,4 +1,23 @@
 #include "tilemap.h"
+#include <string.h>
+
+static uint64_t tile_asset_hash(const void *item, uint64_t seed0, uint64_t seed1) {
+    const TileAsset *asset = item;
+    return hashmap_sip(asset->key, strlen(asset->key), seed0, seed1);
+}
+
+static int tile_asset_compare(const void *a, const void *b, void *udata) {
+    const TileAsset *ta = a;
+    const TileAsset *tb = b;
+    return strcmp(ta->key, tb->key);
+}
+
+static void tile_asset_free(void *item) {
+    TileAsset *asset = item;
+    UnloadTexture(*((Texture2D *) asset->value));
+    FREE(asset->value);
+    FREE(asset);
+}
 
 void load_tilemap_path(tilemap *map, cJSON *path_json) {
     cJSON *layers, *layer, *data, *properties, *properties_item, *properties_name, *properties_value;
@@ -46,14 +65,14 @@ void load_tilemap_path(tilemap *map, cJSON *path_json) {
 
 void load_tilemap_assets(tilemap *map, cJSON *assets_json) {
     cJSON *tiles, *tile;
-    hash_map *hashmap;
+    struct hashmap *hashmap;
     int32 tiles_size, id;
     char *image, *image_asset_path, id_char[10];
 
     tiles = cJSON_GetObjectItem(assets_json, "tiles");
     tiles_size = cJSON_GetArraySize(tiles);
 
-    hashmap = hashmap_alloc(tiles_size);
+    hashmap = hashmap_new(sizeof(TileAsset), tiles_size, 0, 0, tile_asset_hash, tile_asset_compare, tile_asset_free, NULL);
 
     for (size_t i = 0; i < tiles_size; i++) {
         tile = cJSON_GetArrayItem(tiles, i);
@@ -68,7 +87,11 @@ void load_tilemap_assets(tilemap *map, cJSON *assets_json) {
         image_asset_path = path_assets(image);
         *texture = LoadTexture(image_asset_path);
         FREE(image_asset_path);
-        hashmap_insert(hashmap, id_char, texture);
+
+        TileAsset asset;
+        strcpy(asset.key, id_char);
+        asset.value = texture;
+        hashmap_set(hashmap, &asset);
     }
     
     map->assets = hashmap;
@@ -118,7 +141,11 @@ void tilemap_draw_layer(tilemap *map, uint16 layer) {
             if (tile_id == 0) continue;
 
             sprintf(tile_id_char, "%d", tile_id - 1);
-            texture = (Texture2D *) hashmap_search(map->assets, tile_id_char);
+            
+            TileAsset search_asset;
+            strcpy(search_asset.key, tile_id_char);
+            const TileAsset *found_asset = hashmap_get(map->assets, &search_asset);
+            texture = found_asset ? (Texture2D *) found_asset->value : NULL;
 
             if (texture != NULL) {
                 screen_position = tile_to_world(map, (Vector2) {.x=x, .y=y});
@@ -135,14 +162,8 @@ void tilemap_draw(tilemap *map) {
     }
 }
 
-void tilemap_destroy_callback(hash_node *item) {
-    UnloadTexture(*((Texture2D *) item->value));
-    FREE(item->value);
-}
-
 void tilemap_free(tilemap *map) {
     cJSON_Delete(map->layers);
-    hashmap_apply(map->assets, tilemap_destroy_callback);
     hashmap_free(map->assets);
     FREE(map->data);
     FREE(map->collisions);

@@ -48,9 +48,11 @@ vendor_object_inc = include_directories('vendor/object')
 vendor_helpers_inc = include_directories('vendor/helpers')
 cjson_inc = include_directories('lib/cJSON')
 unity_inc = include_directories('lib/unity')
+lib_hashmap_inc = include_directories('lib/hashmap')
 src_inc = include_directories('src')
 
 all_includes = [
+  lib_hashmap_inc,
   vendor_inc,
   vendor_utils_inc,
   vendor_scene_inc,
@@ -66,11 +68,11 @@ vendor_sources = files(
   'vendor/utils/logger.c',
   'vendor/utils/assert.c',
   'vendor/utils/linked_list.c',
-  'vendor/utils/hashmap.c',
   'vendor/scene/core.c',
   'vendor/object/core.c',
   'vendor/status.c',
   'vendor/global.c',
+  'lib/hashmap/hashmap.c',
 )
 
 # cJSON
@@ -96,7 +98,6 @@ if get_option('build_tests')
   test_exe = executable('test_runner',
     files('test/test_runner.c'),
     'test/utils/linked_list_test.c',
-    'test/utils/hashmap_test.c',
     'test/utils/logger_test.c',
     'test/utils/assert_test.c',
     'test/scene/core_test.c',
